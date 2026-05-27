@@ -22,6 +22,10 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    protected $primaryKey = 'user_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
     protected function casts(): array
     {
         return [

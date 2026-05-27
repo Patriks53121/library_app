@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,6 +11,9 @@ class Loan extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'loan_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
     public function book()
     {
         return $this->belongsTo(Book::class);

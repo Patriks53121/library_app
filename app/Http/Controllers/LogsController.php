@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\logs;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class LogsController
+class LogsController extends Controller
 {
 
     public function create(Request $request)
@@ -21,7 +22,7 @@ class LogsController
             'new_value' => 'nullable|string|max:255',
         ]);
         try {
-            logs::create($data);
+            Log::create($data);
             return response()->json(['message' => 'Log created successfully'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error creating log'], 500);

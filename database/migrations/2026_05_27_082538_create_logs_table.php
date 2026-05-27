@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('logs', function (Blueprint $table) {
             $table->id('log_id');
             $table->string('table_name');
-            $table->string('column_name');
             $table->integer('book_id')->nullable()->constrained('books')->onDelete('cascade');
             $table->integer('loan_id')->nullable()->constrained('loans')->onDelete('cascade');
             $table->integer('user_id')->nullable()->constrained('users')->onDelete('cascade');

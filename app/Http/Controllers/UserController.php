@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Book;
+use App\Models\Loan;
+use App\Models\User;
 
-class UserController
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+
+class UserController extends Controller
 {
     public function create(Request $request)
     {
@@ -47,14 +53,10 @@ class UserController
         }
     }
 
-    public function loanBook(Request $request, Book $book, User $user){
-        $requestData = $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
+    public function loanBook(Book $book, User $user){
         if($book->available == 0) return response()->json(['message' => 'Book is not available'], 400);
         try{
-            DB::transaction(function() use ($data){
+            DB::transaction(function() use ($user, $book){
                 if($book->available > 0){
                     Loan::create([
                         'book_id' => $book->id,

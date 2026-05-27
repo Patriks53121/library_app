@@ -2,23 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
+use App\Models\Loan;
+use App\Models\User;
+
+use App\Observers\GlobalDatabaseObserver;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        Book::observe(GlobalDatabaseObserver::class);
+        Loan::observe(GlobalDatabaseObserver::class);
+        User::observe(GlobalDatabaseObserver::class);
     }
 }
