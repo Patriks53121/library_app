@@ -7,59 +7,59 @@ use Illuminate\Http\Request;
 
 class LoanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function create(Request $request)
     {
-        //
+        $data = $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        try{
+            Loan::create($data);
+            return response()->json(['message' => 'Loan created successfully'], 201);
+        }catch (\Exception $e) {
+            return response()->json(['message' => 'Error creating loan'], 500);
+        }
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show()
     {
-        //
+        $loans = Loan::all();
+        if($loans==null ||$loans->isEmpty()) return response()->json(['message' => 'No loans found'], 404);
+        return response()->json(['message' => 'Loans retrieved successfully', 'loans' => $loans], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function showSingle(int $id)
     {
-        //
+        $loan = Loan::findOrFail($id);
+        if($loan==null || $loan->isEmpty()) return response()->json(['message' => 'Loan not found'], 404);
+        return response()->json(['message' => 'Loan updated successfully', 'loan' => $loan], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Loan $loan)
+    public function edit(Request $request, Loan $loan)
     {
-        //
+        $data = $request->validate([
+            'book_id' => 'sometimes|exists:books,id',
+            'user_id' => 'sometimes|exists:users,id',
+            'borrowed_at' => 'sometimes|date',
+            'returned_at' => 'sometimes|date|after_or_equal:borrowed_at',
+        ]);
+
+        try {
+            $loan->update($data);
+            return response()->json(['message' => 'Loan updated successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating loan'], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Loan $loan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Loan $loan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Loan $loan)
     {
-        //
+        try {
+            $loan->delete();
+            return response()->json(['message' => 'Loan deleted successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error deleting loan'], 500);
+        }
     }
 }
