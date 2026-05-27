@@ -46,4 +46,28 @@ class UserController
             return response()->json(['message' => 'Error deleting user'], 500);
         }
     }
+
+    public function loanBook(Request $request, Book $book, User $user){
+        $requestData = $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        if($book->available == 0) return response()->json(['message' => 'Book is not available'], 400);
+        try{
+            DB::transaction(function() use ($data){
+                if($book->available > 0){
+                    Loan::create([
+                        'book_id' => $book->id,
+                        'user_id' => $user->id,
+                        'borrowed_at' => now(),
+                    ]);
+                    $book->decrement('available');
+                    return response()->json(['message' => 'Book loaned successfully'], 201);
+                }
+                return response()->json(['message' => 'Book is not available'], 400);});
+        } catch (\Exception $e) {
+                return response()->json(['message' => 'Error loaning book'], 500);
+            }
+    }
 }
+
