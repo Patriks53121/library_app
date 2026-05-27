@@ -23,6 +23,7 @@ class LoanFactory extends Factory
             'book_id' => Book::factory(),
             'user_id' => User::factory(),
             'borrowed_at' => now(),
+            'borrowed_due' => now()->addDays(14),
             'returned_at' => random_int(0, 1) ? now()->addDays(random_int(1, 14)) : null,
         ];
     }

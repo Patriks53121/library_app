@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-#[Fillable(['book_id', 'user_id', 'borrowed_at', 'returned_at'])]
+#[Fillable(['book_id', 'user_id', 'borrowed_at', 'borrowed_due', 'returned_at'])]
 class Loan extends Model
 {
     use HasFactory;

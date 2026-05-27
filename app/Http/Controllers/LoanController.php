@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class LoanController extends Controller
 {
@@ -44,6 +45,7 @@ class LoanController extends Controller
             'book_id' => 'sometimes|exists:books,id',
             'user_id' => 'sometimes|exists:users,id',
             'borrowed_at' => 'sometimes|date',
+            'borrowed_due' => 'sometimes|date|after_or_equal:borrowed_at',
             'returned_at' => 'sometimes|date|after_or_equal:borrowed_at',
         ]);
 
@@ -63,5 +65,18 @@ class LoanController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error deleting loan'], 500);
         }
+    }
+
+    public function returnBook(Loan $loan){
+        $loan->update(['returned_at' => now()]);
+    }
+
+    public function renewBook(Loan $loan){
+        $loan->update(['borrowed_due' => now()->addDays(7)]);
+    }
+
+    public function expired_loan(){
+        $expired_loans = DB::table('view_expired_loans')->get();
+        return response()->json(['message'=> $expired_loans], 201);
     }
 }

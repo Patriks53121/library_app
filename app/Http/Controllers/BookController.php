@@ -36,6 +36,7 @@ class BookController extends Controller
         return response()->json(['message' => 'Books retrieved successfully', 'books' => $books], 201);
     }
 
+
     public function showSingle(int $id)
     {
         $book = Book::findOrFail($id);

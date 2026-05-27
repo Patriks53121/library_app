@@ -62,6 +62,7 @@ class UserController extends Controller
                         'book_id' => $book->id,
                         'user_id' => $user->id,
                         'borrowed_at' => now(),
+                        'borrowed_due' => now()->addDays(14),
                     ]);
                     $book->decrement('available');
                     return response()->json(['message' => 'Book loaned successfully'], 201);
