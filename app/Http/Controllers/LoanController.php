@@ -13,6 +13,7 @@ class LoanController extends Controller
             'book_id' => 'required|exists:books,id',
             'user_id' => 'required|exists:users,id',
         ]);
+        if($data['book_id'] == 0) return response()->json(['message' => 'Book is not available'], 400);
         try{
             Loan::create($data);
             return response()->json(['message' => 'Loan created successfully'], 201);

@@ -13,12 +13,13 @@ class BookController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'ISBN' => 'required|string|max:10|unique:books',
+            'available' => 'sometimes|integer|min:0',
         ]);
         try{
             Book::create([
                 'title' => $data['title'],
                 'ISBN' => $data['ISBN'],
-                'available' => $data['available'] ?? true,
+                'available' => $data['available'] ?? 0,
             ]);
             return response()->json(['message' => 'Book created successfully'], 201);
         }catch (\Exception $e) {
@@ -34,14 +35,11 @@ class BookController extends Controller
         return response()->json(['message' => 'Books retrieved successfully', 'books' => $books], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function showSingle(int $id)
     {
         $book = Book::findOrFail($id);
         if($book==null || $book->isEmpty()) return response()->json(['message' => 'Book not found'], 404);
-        return response()->json(['message' => 'Book updated successfully', 'book' => $book], 201);
+        return response()->json(['message' => 'Book retrieved successfully', 'book' => $book], 201);
     }
 
     public function edit(Request $request, Book $book)
@@ -49,7 +47,7 @@ class BookController extends Controller
         $data = $request->validate([
             'title' => 'sometimes|string|max:255',
             'ISBN' => 'sometimes|string|max:10',
-            'available' => 'sometimes|boolean',
+            'available' => 'sometimes|integer|min:0',
         ]);
 
         try {

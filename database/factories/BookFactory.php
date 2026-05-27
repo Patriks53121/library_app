@@ -20,7 +20,7 @@ class BookFactory extends Factory
         return [
             'title' => fake()->sentence(3),
             'ISBN' => fake()->unique()->isbn10(),
-            'available' => random_int(0, 1) === 1,
+            'available' => random_int(0, 5),
         ];
     }
 }
