@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->id();
+            $table->id('log_id');
+            $table->string('table_name');
+            $table->string('column_name');
+            $table->integer('book_id')->nullable()->constrained('books')->onDelete('cascade');
+            $table->integer('loan_id')->nullable()->constrained('loans')->onDelete('cascade');
+            $table->integer('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('operation');
+            $table->string('old_value')->nullable();
+            $table->string('new_value')->nullable();
             $table->timestamps();
         });
     }
