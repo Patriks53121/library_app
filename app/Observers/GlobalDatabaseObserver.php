@@ -17,7 +17,6 @@ class GlobalDatabaseObserver
             DB::transaction(function () use ($model) {
                 Log::create([
                     'table_name' => $model->getTable(),
-                    'column_name' => $model->getKeyName(),
                     'operation' => 'INSERT',
                     'book_id' => $model instanceof Book ? $model->getKey() : null,
                     'loan_id' => $model instanceof Loan ? $model->getKey() : null,
@@ -44,7 +43,6 @@ class GlobalDatabaseObserver
 
                 Log::create([
                     'table_name' => $model->getTable(),
-                    'column_name' => implode(',', array_keys($model->getChanges())),
                     'operation' => 'UPDATE',
                     'book_id' => $model instanceof Book ? $model->getKey() : null,
                     'loan_id' => $model instanceof Loan ? $model->getKey() : null,
@@ -65,7 +63,6 @@ class GlobalDatabaseObserver
             DB::transaction(function () use ($model) {
                 Log::create([
                     'table_name' => $model->getTable(),
-                    'column_name' => $model->getKeyName(),
                     'operation' => 'DELETE',
                     'book_id' => $model instanceof Book ? $model->getKey() : null,
                     'loan_id' => $model instanceof Loan ? $model->getKey() : null,

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('operation');
             $table->string('old_value')->nullable();
             $table->string('new_value')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
