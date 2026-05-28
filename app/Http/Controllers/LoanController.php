@@ -76,7 +76,7 @@ class LoanController extends Controller
     }
 
     public function expired_loan(){
-        $expired_loans = DB::table('view_expired_loans')->get();
+        $expired_loans = DB::table('view_expired_loans.sql')->get();
         return response()->json(['message'=> $expired_loans], 201);
     }
 }
